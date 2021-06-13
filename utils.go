@@ -89,7 +89,7 @@ func filesize(thisFileSize int64) string {
 		divisor *= byteSize
 		unitType++
 	}
-	return fmt.Sprintf("%.1f %ciB",
+	return fmt.Sprintf("%.1f %cB",
 		float64(thisFileSize)/float64(divisor), "KMGTPE"[unitType])
 }
 
