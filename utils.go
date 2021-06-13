@@ -10,7 +10,7 @@ import (
 func tablength(thisEntry string) string {
 	theseTabs := []string{}
 	tabCount := 0
-	for i := 0; i < len(thisEntry)/7; i++ {
+	for i := 0; i < len(thisEntry)/8; i++ {
 		tabCount++
 	}
 
@@ -36,13 +36,14 @@ func thisList(filepath string) {
 
 	er(err)
 	files, err := f.Readdir(0)
+
 	er(err)
 
 	// FOLDERS
 
 	for _, entry := range files {
 		if entry.IsDir() {
-			fmt.Println(boldbrightgreen + entry.Name() + tablength(entry.Name()) + green + "FOLDER" + tablength("FOLDER") + entry.ModTime().String()[:19] + green + " DIR")
+			fmt.Println(boldbrightgreen + entry.Name() + tablength(entry.Name()) + green + "FOLDER" + tablength("FOLDER") + entry.ModTime().String()[:16] + green + " DIR")
 		}
 
 	}
@@ -52,7 +53,7 @@ func thisList(filepath string) {
 	for _, entry := range files {
 		if !entry.IsDir() {
 			if entry.Mode().String() == "-rwxr-xr-x" && entry.Mode().Type().String() != "L---------" {
-				fmt.Printf("%s%s%s%s%s%s%s\n", brightyellow, entry.Name(), nc, tablength(entry.Name()), filesize(entry.Size()), tablength(filesize(entry.Size())), entry.ModTime().String()[:19]+yellow+" EXE")
+				fmt.Printf("%s%s%s%s%s%s\n", brightyellow, entry.Name(), tablength(entry.Name()), filesize(entry.Size()), tablength(filesize(entry.Size())), entry.ModTime().String()[:16]+yellow+" EXE")
 			}
 
 		}
@@ -62,7 +63,7 @@ func thisList(filepath string) {
 
 	for _, entry := range files {
 		if entry.Mode().String() != "-rwxr-xr-x" && entry.Mode().Type().String() == "L---------" {
-			fmt.Printf("%s%s%s%s%s%s%s\n", brightmagenta, entry.Name(), nc, tablength(entry.Name()), filesize(entry.Size()), tablength(filesize(entry.Size())), entry.ModTime().String()[:19]+magenta+" SYM")
+			fmt.Printf("%s%s%s%s%s%s\n", brightmagenta, entry.Name(), tablength(entry.Name()), filesize(entry.Size()), tablength(filesize(entry.Size())), entry.ModTime().String()[:16]+magenta+" SYM")
 		}
 	}
 
@@ -72,7 +73,7 @@ func thisList(filepath string) {
 		if !entry.IsDir() {
 			thisSize := filesize(entry.Size())
 			if entry.Mode().String() != "-rwxr-xr-x" {
-				fmt.Printf("%s%s%s%s%s%s%s\n", nc, entry.Name(), nc, tablength(entry.Name()), thisSize, tablength(thisSize), entry.ModTime().String()[:19])
+				fmt.Printf("%s%s%s%s%s%s%s\n", nc, entry.Name(), nc, tablength(entry.Name()), thisSize, tablength(thisSize), entry.ModTime().String()[:16])
 			}
 		}
 	}
