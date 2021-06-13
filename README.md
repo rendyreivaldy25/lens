@@ -1,5 +1,7 @@
 # lens
-lens isn't ls
+## `lens` isn't `ls`
+
+[???](https://github.com/RocksteadyTC/lens/issues/4)
 
 
 ![image](https://user-images.githubusercontent.com/34389545/121794829-11abb080-cbd1-11eb-9a94-72772747c87b.png)
@@ -41,6 +43,11 @@ config.go       38 B            2021-06-12 19:52
 README.md       21 B            2021-06-12 19:38
 utils.go        2.3 KiB         2021-06-12 22:21
 ```
+
+## TODO
+
+- [Add feature flags](https://github.com/RocksteadyTC/lens/issues/3)
+- [Alphabetize the lists](https://github.com/RocksteadyTC/lens/issues/2)
 
 ## License
 
