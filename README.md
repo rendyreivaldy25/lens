@@ -44,6 +44,31 @@ README.md       21 B            2021-06-12 19:38
 utils.go        2.3 KiB         2021-06-12 22:21
 ```
 
+## How to compile
+
+As a prerequisite, you'll need Go and Git installed on your system. The rest of the process is fairly simple:
+
+```
+cd ~/my/path/somewhere
+```
+Move to a path where you want to put lens
+
+```
+git clone https://github.com/RocksteadyTC/lens/
+```
+Clone the code
+
+```
+cd lens
+```
+Move into the directory you just cloned
+
+```
+go build
+```
+Compile the code. This will make a program in the same folder called `lens`
+
+
 ## TODO
 
 - [Add feature flags](https://github.com/RocksteadyTC/lens/issues/3)
