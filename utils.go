@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sort"
 	"strings"
 )
 
@@ -39,40 +40,27 @@ func thisList(filepath string) {
 
 	er(err)
 
+	sort.Slice(files, func(i, j int) bool {
+		return files[i].Name() < files[j].Name()
+	})
 	// FOLDERS
 
 	for _, entry := range files {
 		if entry.IsDir() {
 			fmt.Println(boldbrightgreen + entry.Name() + tablength(entry.Name()) + green + "FOLDER" + tablength("FOLDER") + entry.ModTime().String()[:16] + green + " DIR")
 		}
-
-	}
-
-	// BINARIES
-
-	for _, entry := range files {
 		if !entry.IsDir() {
 			if entry.Mode().String() == "-rwxr-xr-x" && entry.Mode().Type().String() != "L---------" {
 				fmt.Printf("%s%s%s%s%s%s\n", brightyellow, entry.Name(), tablength(entry.Name()), filesize(entry.Size()), tablength(filesize(entry.Size())), entry.ModTime().String()[:16]+yellow+" EXE")
 			}
 
 		}
-	}
-
-	// SYMLINKS
-
-	for _, entry := range files {
 		if entry.Mode().String() != "-rwxr-xr-x" && entry.Mode().Type().String() == "L---------" {
 			fmt.Printf("%s%s%s%s%s%s\n", brightmagenta, entry.Name(), tablength(entry.Name()), filesize(entry.Size()), tablength(filesize(entry.Size())), entry.ModTime().String()[:16]+magenta+" SYM")
 		}
-	}
-
-	// OTHER FILES
-
-	for _, entry := range files {
 		if !entry.IsDir() {
 			thisSize := filesize(entry.Size())
-			if entry.Mode().String() != "-rwxr-xr-x" {
+			if entry.Mode().String() != "-rwxr-xr-x" && entry.Mode().Type().String() != "L---------" {
 				fmt.Printf("%s%s%s%s%s%s%s\n", nc, entry.Name(), nc, tablength(entry.Name()), thisSize, tablength(thisSize), entry.ModTime().String()[:16])
 			}
 		}
@@ -89,7 +77,7 @@ func filesize(thisFileSize int64) string {
 		divisor *= byteSize
 		unitType++
 	}
-	return fmt.Sprintf("%.1f %ciB",
+	return fmt.Sprintf("%.2f %cB",
 		float64(thisFileSize)/float64(divisor), "KMGTPE"[unitType])
 }
 
