@@ -1,28 +1,27 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 )
 
 func main() {
-	if len(os.Args) == 1 {
-		thisList(filepath)
-	} else if len(os.Args) == 2 {
-		thisList(os.Args[1])
-	} else if len(os.Args) > 2 {
-		for i, j := range os.Args {
+	hideArgs := flag.String("hide", "- empty -", "define which things to hide, i.e : color, size, date, type. separated with comma")
+	flag.Parse()
+	if len(flag.Args()) == 0 {
+		thisList(filepath, *hideArgs)
+	} else {
+		for i, j := range flag.Args() {
 			if i != 0 {
-
 				fmt.Println(brightyellow + "Directory:\t" + j + nc)
-				thisList(j)
+				thisList(j, *hideArgs)
 				if i < len(os.Args) {
 					fmt.Println()
 				}
 			}
 		}
 	}
-
 }
 
 func init() {

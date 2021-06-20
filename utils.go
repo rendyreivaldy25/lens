@@ -32,7 +32,7 @@ func tablength(thisEntry string) string {
 
 	return strings.Join(theseTabs, "")
 }
-func thisList(filepath string) {
+func thisList(filepath string, args string) {
 	f, err := os.Open(filepath)
 
 	er(err)
@@ -45,18 +45,21 @@ func thisList(filepath string) {
 	})
 	// FOLDERS
 
+	indexToHide := strings.Split(args, ",")
+
 	for _, entry := range files {
+
 		if entry.IsDir() {
-			fmt.Println(boldbrightgreen + entry.Name() + tablength(entry.Name()) + green + "FOLDER" + tablength("FOLDER") + entry.ModTime().String()[:16] + green + " DIR")
+			fmt.Println(getColor(checkIsColumnHide(indexToHide, "color"), "DIR") + entry.Name() + tablength(entry.Name()) + getColor(checkIsColumnHide(indexToHide, "color"), "TYPEDIR") + "FOLDER" + tablength("FOLDER") + entry.ModTime().String()[:16] + getColor(checkIsColumnHide(indexToHide, "color"), "TYPEDIR") + " DIR")
 		}
 		if !entry.IsDir() {
 			if entry.Mode().String() == "-rwxr-xr-x" && entry.Mode().Type().String() != "L---------" {
-				fmt.Printf("%s%s%s%s%s%s\n", brightyellow, entry.Name(), tablength(entry.Name()), filesize(entry.Size()), tablength(filesize(entry.Size())), entry.ModTime().String()[:16]+yellow+" EXE")
+				fmt.Printf("%s%s%s%s%s%s\n", getColor(checkIsColumnHide(indexToHide, "color"), "EXE"), entry.Name(), tablength(entry.Name()), filesize(entry.Size()), tablength(filesize(entry.Size())), entry.ModTime().String()[:16]+getColor(checkIsColumnHide(indexToHide, "color"), "TYPEEXE")+" EXE")
 			}
 
 		}
 		if entry.Mode().String() != "-rwxr-xr-x" && entry.Mode().Type().String() == "L---------" {
-			fmt.Printf("%s%s%s%s%s%s\n", brightmagenta, entry.Name(), tablength(entry.Name()), filesize(entry.Size()), tablength(filesize(entry.Size())), entry.ModTime().String()[:16]+magenta+" SYM")
+			fmt.Printf("%s%s%s%s%s%s\n", getColor(checkIsColumnHide(indexToHide, "color"), "SYM"), entry.Name(), tablength(entry.Name()), filesize(entry.Size()), tablength(filesize(entry.Size())), entry.ModTime().String()[:16]+getColor(checkIsColumnHide(indexToHide, "color"), "TYPESYM")+" SYM")
 		}
 		if !entry.IsDir() {
 			thisSize := filesize(entry.Size())
@@ -65,6 +68,37 @@ func thisList(filepath string) {
 			}
 		}
 	}
+}
+
+func checkIsColumnHide(args []string, column string) bool {
+	for _, data := range args {
+		if strings.Trim(data, " ") == column {
+			return true
+		}
+	}
+	return false
+}
+
+func getColor(colorArgumentFlag bool, dataType string) string {
+	if !colorArgumentFlag {
+		switch dataType {
+		case "DIR":
+			return boldbrightgreen
+		case "EXE":
+			return brightyellow
+		case "SYM":
+			return brightmagenta
+		case "TYPEDIR":
+			return green
+		case "TYPEEXE":
+			return yellow
+		case "TYPESYM":
+			return magenta
+		default:
+			return nc
+		}
+	}
+	return nc
 }
 
 func filesize(thisFileSize int64) string {
